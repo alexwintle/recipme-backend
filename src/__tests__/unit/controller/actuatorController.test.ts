@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getActuatorEndpoints } from "../../../controller/actuatorController";
 
-describe('getActuatorEndpoints', () => {
+describe('Actuator', () => {
   test('returns correct actuator endpoints', () => {
     const mockReq = {} as Request;
     const mockRes: Partial<Response> = {
