@@ -68,6 +68,21 @@ npm start
 
 Runs `node dist/app.js` to start the app in production mode.
 
+## Running with Docker
+
+With the docker daemon running, run the command following commands to run the service (mongo & backend) in detached mode:
+
+### Development Mode
+
+```bash
+docker-compose -f docker/docker-compose.api-dev.yml up -d
+```
+
+### Production
+
+```bash
+docker-compose -f docker/docker-compose.yml up -d
+```
 
 ## Project Structure
 ```

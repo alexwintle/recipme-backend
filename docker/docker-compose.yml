@@ -9,9 +9,6 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_URI=mongodb://mongodb:27017/recipme
-    depends_on:
-      mongodb:
-        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:4000/actuator/health || exit 1"]
       interval: 30s
