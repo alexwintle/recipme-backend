@@ -26,6 +26,6 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ..
+          context: .
           file: docker/Dockerfile.prod
           push: false
