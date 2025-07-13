@@ -125,4 +125,3 @@ Use these built-in endpoints to monitor the health of the service:
 | `GET /actuator/info`    | App version or metadata                                                    |
 | `GET /actuator/metrics` | Basic app metrics                |
 | `GET /actuator/list`    | 🛠 Custom route: lists all available actuator endpoints (excluding itself) |
-
