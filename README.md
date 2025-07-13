@@ -71,18 +71,24 @@ Runs `node dist/app.js` to start the app in production mode.
 
 ## Project Structure
 ```
-recipme-backend/
-├── src/
-│   ├── app.ts              # Entry point
-│   ├── controller/         # Controllers (business logic)
-│   ├── routes/             # Express routes
-│   ├── model/              # Data models / schemas
-│   ├── repository/         # DB access logic
-│   └── types/              # TypeScript interfaces/types
-├── dist/                   # Compiled JS (auto-generated)
-├── package.json
-├── tsconfig.json
-└── README.md
+recipme-backend
+├─ Dockerfile
+├─ eslint.config.js
+├─ jest.config.ts
+├─ package-lock.json
+├─ package.json
+├─ README.md
+├─ src
+│  ├─ app.ts
+│  ├─ controller
+│  ├─ model
+│  ├─ repository
+│  ├─ routes
+│  ├─ types
+│  └─ __tests__
+│     ├─ integration
+│     └─ unit
+└─ tsconfig.json
 ```
 
 ## Authentication
@@ -104,3 +110,4 @@ Use these built-in endpoints to monitor the health of the service:
 | `GET /actuator/info`    | App version or metadata                                                    |
 | `GET /actuator/metrics` | Basic app metrics                |
 | `GET /actuator/list`    | 🛠 Custom route: lists all available actuator endpoints (excluding itself) |
+
