@@ -1,15 +1,34 @@
 import request from 'supertest';
-import app from '../../app';
+import { createExpressApp } from '../../app';
+import { startTestDatabase, stopTestDatabase } from '../utils/testDatabase';
+import { closeDatabase } from '../../config/mongoClient';
+import type { Application } from 'express';
 
-describe('GET responses', () => {
+let app: Application;
 
-  test('Should list actuator endpoints when GET /actuator/list', async () => {
-    const response = await request(app).get('/actuator/list');
+describe('GET responses (integration)', () => {
+  beforeAll(async () => {
+    const { db } = await startTestDatabase();
+    app = createExpressApp(db); 
+  }, 60000);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('health');
-    expect(response.body).toHaveProperty('info');
-    expect(response.body).toHaveProperty('metrics');
+  afterAll(async () => {
+    await closeDatabase();
+    await stopTestDatabase();
   });
 
+  test('Should lists endpoints', async () => {
+    const res = await request(app).get('/actuator/list');
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('health');
+    expect(res.body).toHaveProperty('info');
+    expect(res.body).toHaveProperty('metrics');
+  }, 10000);
+
+  test('Should show service health', async () => {
+    const res = await request(app).get('/actuator/health');
+
+    expect(res.status).toBe(200);
+    expect(res.body.components.mongo.status).toBe('UP');
+  }, 25000);
 });
