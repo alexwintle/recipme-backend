@@ -2,7 +2,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import express, { Express } from 'express';
 import actuator from 'express-actuator';
-import actuatorRouter from './routes/actuatorRouter';
+import { getActuatorEndpoints } from './controller/actuatorController';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,11 +10,16 @@ const __dirname = dirname(__filename);
 const app: Express = express();
 
 const actuatorOptions = {
-  basePath: '/actuator'
+  basePath: '/actuator',
+  customEndpoints: [
+    {
+      id: 'list',
+      controller: getActuatorEndpoints
+    }
+  ]
 }
 
 app.use(actuator(actuatorOptions))
-app.use('/actuator', actuatorRouter)
 
 const PORT = process.env.PORT || 3000;
 
