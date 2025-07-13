@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import { ActuatorEndpointsResponse } from "../types/ActuatorEndpointsResponse";
+import { getActuatorEndpoints, getHealth } from "../services/actuatorService";
 
-export const getActuatorEndpoints = (req: Request, res: Response): void => {
-  const endpoints: ActuatorEndpointsResponse = {
-    health: '/actuator/health',
-    info: '/actuator/info',
-    metrics: '/actuator/metrics'
-  }
+export const getActuatorEndpointsResponse = (_req: Request, res: Response): void => {
+  const endpoints = getActuatorEndpoints();
 
   res.json(endpoints)
+}
+
+export const getHealthResponse = async (_req: Request, res: Response): Promise<void> => {
+  const healthResponse = await getHealth()
+
+  res.json(healthResponse);
 }
