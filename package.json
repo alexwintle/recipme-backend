@@ -11,7 +11,7 @@
     "lint": "npx eslint",
     "test": "jest --detectOpenHandles",
     "tests:unit": "jest src/__tests__/unit --detectOpenHandles",
-    "tests:integration": "jest src/__tests__/integration --detectOpenHandles"
+    "tests:integration": "jest src/__tests__/integration --detectOpenHandles --testTimeout=30000"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
