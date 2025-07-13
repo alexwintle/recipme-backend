@@ -11,7 +11,7 @@
     "lint": "npx eslint",
     "test": "jest",
     "test:units": "jest src/__tests__/unit",
-    "test:integrations": "jest src/__tests__/integration --passWithNoTests"
+    "test:integrations": "jest src/__tests__/integration"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
