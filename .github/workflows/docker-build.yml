@@ -17,6 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List repo root files
+        run: ls -la ..
+
+      - name: Show package-lock.json
+        run: cat ../package-lock.json
+
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
