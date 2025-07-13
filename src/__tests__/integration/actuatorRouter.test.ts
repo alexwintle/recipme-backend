@@ -1,16 +1,12 @@
+import app from '../../app';
 import request from 'supertest';
-import { createExpressApp } from '../../app';
 import { startTestDatabase, stopTestDatabase } from '../utils/testDatabase';
 import { closeDatabase } from '../../config/mongoClient';
-import type { Application } from 'express';
-
-let app: Application;
 
 describe('GET responses (integration)', () => {
   beforeAll(async () => {
-    const { db } = await startTestDatabase();
-    app = createExpressApp(db); 
-  }, 60000);
+    await startTestDatabase();
+  });
 
   afterAll(async () => {
     await closeDatabase();
@@ -23,12 +19,12 @@ describe('GET responses (integration)', () => {
     expect(res.body).toHaveProperty('health');
     expect(res.body).toHaveProperty('info');
     expect(res.body).toHaveProperty('metrics');
-  }, 10000);
+  });
 
   test('Should show service health', async () => {
     const res = await request(app).get('/actuator/health');
 
     expect(res.status).toBe(200);
     expect(res.body.components.mongo.status).toBe('UP');
-  }, 25000);
+  });
 });

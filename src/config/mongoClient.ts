@@ -1,44 +1,26 @@
-// src/config/mongoClient.ts
 import { MongoClient, Db } from 'mongodb';
 
-let _client: MongoClient | null = null;
-let _db: Db | null = null;
-let _testDb: Db | null = null;
-
-export const setTestDb = (dbInstance: Db) => {
-  _testDb = dbInstance;
-};
+let client: MongoClient | null = null;
+let db: Db | null = null;
 
 export const connectToDatabase = async (): Promise<Db> => {
-  if (_testDb) {
-    return _testDb;
-  }
-
-  if (!_client) {
-    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/recipme';
-    _client = new MongoClient(uri);
-    try {
-      await _client.connect();
-      _db = _client.db('recipme');
-      console.log('mongoClient: Successfully connected to default/production database.');
-    } catch (error) {
-      console.error('mongoClient: Failed to connect to default/production database:', error);
-      _client = null;
-      throw error;
+  if (!client) {
+    const uri = process.env.MONGO_URI;
+    if (!uri) {
+      throw new Error('MONGO_URI environment variable is not set');
     }
-  } else {
-    console.log('mongoClient: Reusing existing default/production database client.');
+    client = new MongoClient(uri);
+    await client.connect();
+    db = client.db(process.env.MONGO_DB_NAME || 'recipme');
   }
-
-  return _db!;
+  
+  return db!;
 };
 
 export const closeDatabase = async () => {
-  console.log("mongoClient: Closing database client.");
-  if (_client) {
-    await _client.close();
-    _client = null;
-    _db = null;
+  if (client) {
+    await client.close();
+    client = null;
+    db = null;
   }
-  _testDb = null;
 };

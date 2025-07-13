@@ -9,7 +9,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "lint": "npx eslint",
-    "tests": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles",
     "tests:unit": "jest src/__tests__/unit --detectOpenHandles",
     "tests:integration": "jest src/__tests__/integration --detectOpenHandles"
   },
