@@ -1,27 +1,30 @@
 import { MongoClient, Db } from 'mongodb';
 
-const connectionString = process.env.MONGO_URI || 'mongodb://localhost:27017';
-const client = new MongoClient(connectionString);
-
+let client: MongoClient | null = null;
 let db: Db | null = null;
 
 export const connectToDatabase = async (): Promise<Db> => {
-  if (db) return db;
+  if (!client) {
+    const uri = process.env.MONGO_URI;
 
-  try {
+    if (!uri) {
+      throw new Error('MONGO_URI environment variable is not set');
+    }
+
+    client = new MongoClient(uri);
     await client.connect();
-    db = client.db('recipme');
-    console.log("Connected to MongoDB");
-    return db;
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    throw error;
+
+    db = client.db(process.env.MONGO_DB_NAME || 'recipme');
   }
+
+  return db!;
 };
 
-export const closeConnection = async (): Promise<void> => {
-  console.log("Closing MongoDB connection...");
-  await client.close();
-  db = null;
-  console.log("MongoDB connection closed");
+export const closeDatabase = async () => {
+  if (client) {
+    await client.close();
+
+    client = null;
+    db = null;
+  }
 };

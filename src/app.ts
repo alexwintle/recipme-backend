@@ -1,23 +1,17 @@
-import express, { Express } from 'express';
+import express from 'express';
 import actuator from 'express-actuator';
 import { getActuatorEndpointsResponse, getHealthResponse } from './controller/actuatorController';
 
-const app: Express = express();
+const app = express();
 
 const actuatorOptions = {
   basePath: '/actuator',
   customEndpoints: [
-    {
-      id: 'list',
-      controller: getActuatorEndpointsResponse
-    },
-    {
-      id: 'health',
-      controller: getHealthResponse
-    }
+    { id: 'list', controller: getActuatorEndpointsResponse },
+    { id: 'health', controller: getHealthResponse }
   ],
-}
+};
 
-app.use(actuator(actuatorOptions))
+app.use(actuator(actuatorOptions));
 
 export default app;
