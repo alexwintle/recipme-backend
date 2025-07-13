@@ -1,11 +1,6 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import express, { Express } from 'express';
 import actuator from 'express-actuator';
 import { getActuatorEndpoints } from './controller/actuatorController';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app: Express = express();
 
