@@ -1,0 +1,27 @@
+name: Docker Build Check
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+
+      - name: Verify Docker build success
+        run: echo "Docker image built successfully. This means 'npm ci' (and any other build steps in the Dockerfile) completed without errors inside the container."
