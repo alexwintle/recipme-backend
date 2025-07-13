@@ -3,7 +3,7 @@ import { MongoDBContainer, StartedMongoDBContainer } from '@testcontainers/mongo
 let container: StartedMongoDBContainer;
 
 export const startTestDatabase = async () => {
-  container = await new MongoDBContainer('mongo:6.0.1').start();
+  container = await new MongoDBContainer('mongo:6.0.1').withStartupTimeout(30000).start();
   const baseUri = container.getConnectionString();
   const uri = `${baseUri}?directConnection=true`;
 
