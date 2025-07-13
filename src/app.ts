@@ -22,6 +22,10 @@ app.get('/', (_, res) => {
   res.send('Hello from RecipMe!');
 });
 
-app.listen(PORT, () => {
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
   console.log(`🚀 RecipMe backend running at http://localhost:${PORT}`);
 });
+}
+
+export default app;
