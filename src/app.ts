@@ -3,7 +3,7 @@ import actuator from 'express-actuator';
 import { getActuatorEndpoints } from './controller/actuatorController';
 
 const app: Express = express();
-
+ 
 const actuatorOptions = {
   basePath: '/actuator',
   customEndpoints: [
