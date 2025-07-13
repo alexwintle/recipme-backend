@@ -68,6 +68,21 @@ npm start
 
 Runs `node dist/app.js` to start the app in production mode.
 
+## Running with Docker
+
+With the docker daemon running, run the command following commands to run the service (mongo & backend) in detached mode:
+
+### Development Mode
+
+```bash
+docker-compose -f docker/docker-compose.api-dev.yml up -d
+```
+
+### Production
+
+```bash
+docker-compose -f docker/docker-compose.yml up -d
+```
 
 ## Project Structure
 ```
@@ -110,4 +125,3 @@ Use these built-in endpoints to monitor the health of the service:
 | `GET /actuator/info`    | App version or metadata                                                    |
 | `GET /actuator/metrics` | Basic app metrics                |
 | `GET /actuator/list`    | 🛠 Custom route: lists all available actuator endpoints (excluding itself) |
-

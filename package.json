@@ -4,14 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/app.ts",
-    "start": "node dist/app.js",
+    "dev": "tsx watch --clear-screen=false src/server.ts",
+    "start": "node dist/server.js",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "lint": "npx eslint",
-    "test": "jest",
-    "test:units": "jest src/__tests__/unit",
-    "test:integrations": "jest src/__tests__/integration"
+    "tests": "jest --detectOpenHandles",
+    "tests:unit": "jest src/__tests__/unit --detectOpenHandles",
+    "tests:integration": "jest src/__tests__/integration --detectOpenHandles"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -19,6 +19,7 @@
     "express": "~4.16.1",
     "express-actuator": "^1.8.4",
     "http-errors": "~1.6.3",
+    "mongodb": "^6.17.0",
     "morgan": "~1.9.1"
   },
   "devDependencies": {
