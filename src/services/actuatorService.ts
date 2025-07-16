@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../config/mongoClient";
+import { mongoHealthcheck } from "../config/mongoClient";
 import { ActuatorEndpointsResponse } from "../types/ActuatorEndpointsResponse";
 import { ActuatorHealthResponse } from "../types/ActuatorHealthResponse";
 
@@ -15,10 +15,9 @@ export const getHealth = async (): Promise<ActuatorHealthResponse> => {
   let mongoError = null;
 
   try {
-    const db = await connectToDatabase();
-    const result = await db.admin().ping();
+    const mongoHealth = await mongoHealthcheck()
 
-    if (result.ok === 1) {
+    if (mongoHealth.ok === 1) {
       mongoStatus = 'UP';
     }
   } catch (error) {
