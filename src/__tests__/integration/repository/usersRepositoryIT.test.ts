@@ -3,13 +3,13 @@ import { accessCollection } from "../../../config/mongoClient";
 import { User, UserStatus } from "../../../model/User";
 import { findUserByUid, saveUser } from "../../../repository/usersRepository";
 import * as collection from '../../../config/mongoClient';
-import { clearDatabase, startTestDatabase, stopTestDatabase } from "../../utils/testDatabase"
+import { clearDatabase, setupIntegrationTest, stopTestDatabase } from "../../utils/testDatabase"
 
 describe('usersRepository', () => {
   let usersCollection: Collection<User>;
 
   beforeAll(async () => {
-    await startTestDatabase();
+    await setupIntegrationTest();
     usersCollection = await accessCollection<User>(process.env.USER_COLLECTION_NAME ?? "users");
   });
 

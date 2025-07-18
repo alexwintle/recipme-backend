@@ -1,10 +1,9 @@
 import request from 'supertest';
-import { clearDatabase, startTestDatabase, stopTestDatabase } from '../../utils/testDatabase';
+import { clearDatabase, setupIntegrationTest, stopTestDatabase } from '../../utils/testDatabase';
 import { NewUserRequest } from '../../../types/NewUserRequest';
 import { User, UserStatus } from '../../../model/User';
 import { accessCollection } from '../../../config/mongoClient';
 import { Collection } from 'mongodb';
-import { createApp } from '../../../app';
 import { App } from 'supertest/types';
 
 describe('POST /users (integration)', () => {
@@ -12,12 +11,11 @@ describe('POST /users (integration)', () => {
   let app: App;
 
   beforeAll(async () => {
-    await startTestDatabase();
-    app = createApp();
+    app = await setupIntegrationTest();
     usersCollection = await accessCollection<User>(process.env.USER_COLLECTION_NAME ?? "users");
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await clearDatabase(usersCollection);
   });
 
