@@ -4,7 +4,6 @@ import { User, UserStatus } from "../../../model/User";
 import { findUserByUid, saveUser } from "../../../repository/usersRepository";
 import * as collection from '../../../config/mongoClient';
 import { clearDatabase, startTestDatabase, stopTestDatabase } from "../../utils/testDatabase"
-import { NewUserRequest } from "../../../types/NewUserRequest";
 
 describe('usersRepository', () => {
   let usersCollection: Collection<User>;
