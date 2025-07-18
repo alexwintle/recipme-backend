@@ -1,4 +1,7 @@
 import { MongoDBContainer, StartedMongoDBContainer } from '@testcontainers/mongodb';
+import { Collection } from 'mongodb';
+import { User } from '../../model/User';
+import { closeDatabase, initializeDb } from '../../config/mongoClient';
 
 let container: StartedMongoDBContainer;
 
@@ -10,6 +13,7 @@ export const startTestDatabase = async () => {
   process.env.MONGO_URI = uri;
   process.env.MONGO_DB_NAME = 'testdb';
 
+  await initializeDb();
   return { uri };
 };
 
@@ -17,4 +21,10 @@ export const stopTestDatabase = async () => {
   if (container) {
     await container.stop();
   }
+
+  await closeDatabase();
 };
+
+export const clearDatabase = async (collection: Collection<User>) => {
+  await collection.deleteMany({});
+}

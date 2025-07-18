@@ -1,15 +1,17 @@
-import app from "./app";
-import { createClient } from "./config/mongoClient";
+import { createApp } from "./app";
+import { initializeDb } from "./config/mongoClient";
 
 const PORT = process.env.PORT || 4000;
 
-app.get('/', (_, res) => {
-  res.send('Hello from RecipMe!');
-});
-
 const bootstrap = async () => {
   try {
-    await createClient();
+    await initializeDb(); 
+    const app = createApp();
+
+    app.get('/', (_, res) => {
+      res.send('Hello from RecipMe!');
+    });
+
     app.listen(PORT, () => {
       console.log(`🚀 RecipMe backend running at http://localhost:${PORT}`);
     });

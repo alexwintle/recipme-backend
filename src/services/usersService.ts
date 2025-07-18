@@ -1,12 +1,14 @@
-import { User } from "../model/User"
-import { findUserByUid, saveUser } from "../repository/usersRepository"
+import { User, UserStatus } from "../model/User";
+import { saveUser } from "../repository/usersRepository"
+import { NewUserRequest } from "../types/NewUserRequest";
 
-export const createUser = async (newUser: User) => {
-  const existingUser = await findUserByUid(newUser.uid);
+export const createUser = async (newUser: NewUserRequest) => {
+  const formatUser: User = {
+    uid: newUser.uid,
+    username: newUser.username,
+    status: UserStatus.ACTIVE,
+    createdAt: new Date().toISOString(),
+  };
 
-  if (existingUser) {
-    throw new Error('User already exists')
-  }
-
-  return saveUser(newUser)
+  return saveUser(formatUser)
 }

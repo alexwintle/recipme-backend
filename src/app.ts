@@ -1,20 +1,25 @@
 import express from 'express';
 import actuator from 'express-actuator';
 import { getActuatorEndpointsHandler, getHealthHandler } from './controller/actuatorController';
-import usersRouter from './routes/usersRouter';
+import usersRouter from './routers/usersRouter';
 
-const app = express();
+export const createApp = () => {
+  const app = express();
+  
+  console.log('Initializing app with MONGO_URI:', process.env.MONGO_URI);
 
-const actuatorOptions = {
-  basePath: '/actuator',
-  customEndpoints: [
-    { id: 'list', controller: getActuatorEndpointsHandler },
-    { id: 'health', controller: getHealthHandler }
-  ],
+  const actuatorOptions = {
+    basePath: '/actuator',
+    customEndpoints: [
+      { id: 'list', controller: getActuatorEndpointsHandler },
+      { id: 'health', controller: getHealthHandler }
+    ],
+  };
+
+  app.use(actuator(actuatorOptions));
+  app.use(express.json());
+
+  app.use('/users', usersRouter);
+
+  return app;
 };
-
-app.use(actuator(actuatorOptions));
-
-app.use('/users', usersRouter)
-
-export default app;
