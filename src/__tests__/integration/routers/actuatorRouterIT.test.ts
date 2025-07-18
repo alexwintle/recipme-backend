@@ -1,15 +1,15 @@
-import app from '../../app';
 import request from 'supertest';
-import { startTestDatabase, stopTestDatabase } from '../utils/testDatabase';
-import { closeDatabase } from '../../config/mongoClient';
+import { setupIntegrationTest, stopTestDatabase } from '../../utils/testDatabase';
+import { App } from 'supertest/types';
 
 describe('GET responses (integration)', () => {
+  let app: App;
+
   beforeAll(async () => {
-    await startTestDatabase();
+    app = await setupIntegrationTest();
   });
 
   afterAll(async () => {
-    await closeDatabase();
     await stopTestDatabase();
   });
 

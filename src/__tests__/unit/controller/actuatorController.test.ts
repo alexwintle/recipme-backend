@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getActuatorEndpointsResponse, getHealthResponse } from "../../../controller/actuatorController";
+import { getActuatorEndpointsHandler, getHealthHandler } from "../../../controller/actuatorController";
 import * as actuatorService from '../../../services/actuatorService';
 
 jest.mock('../../../services/actuatorService');
@@ -19,7 +19,7 @@ describe('Actuator Controller', () => {
       metrics: '/actuator/metrics'
     });
 
-    getActuatorEndpointsResponse(mockReq, mockRes as Response);
+    getActuatorEndpointsHandler(mockReq, mockRes as Response);
 
     expect(mockRes.json).toHaveBeenCalledWith({
       health: '/actuator/health',
@@ -40,7 +40,7 @@ describe('Actuator Controller', () => {
       }
     });
 
-    await getHealthResponse(mockReq, mockRes as Response);
+    await getHealthHandler(mockReq, mockRes as Response);
 
     expect(mockRes.json).toHaveBeenCalledWith({
       statusCode: 200,
@@ -63,7 +63,7 @@ describe('Actuator Controller', () => {
       }
     });
 
-    await getHealthResponse(mockReq, mockRes as Response);
+    await getHealthHandler(mockReq, mockRes as Response);
 
     expect(mockRes.json).toHaveBeenCalledWith({
       statusCode: 503,
