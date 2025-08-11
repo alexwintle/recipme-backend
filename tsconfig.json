@@ -7,9 +7,14 @@
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-    "include": ["src/**/*"],
-    "exclude": ["dist"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist"
+  ]
 }
