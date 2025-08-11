@@ -1,4 +1,4 @@
 export interface NewUserRequest {
-  uid: string;
-  username: string;
+    uid: string;
+    username: string;
 }
