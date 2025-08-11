@@ -9,7 +9,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         error: "Request body not provided.",
       });
     }
-    
+
     const newUserRequest: NewUserRequest = req.body;
 
     const requiredFields = ["uid", "username"];
@@ -25,7 +25,6 @@ export const createUserHandler = async (req: Request, res: Response) => {
     const createdUserUID = await createUser(newUserRequest);
 
     return res.status(200).json({
-      createdUser: createdUserUID,
       message: `Created user with UID: ${createdUserUID}`,
     });
   } catch (error) {

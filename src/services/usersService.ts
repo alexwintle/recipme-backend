@@ -1,5 +1,5 @@
 import { User, UserStatus } from "../model/User";
-import { saveUser } from "../repository/usersRepository"
+import { saveUser } from "../repository/usersRepository";
 import { NewUserRequest } from "../types/NewUserRequest";
 
 export const createUser = async (newUser: NewUserRequest) => {
@@ -10,5 +10,5 @@ export const createUser = async (newUser: NewUserRequest) => {
     createdAt: new Date().toISOString(),
   };
 
-  return saveUser(formatUser)
-}
+  return saveUser(formatUser);
+};

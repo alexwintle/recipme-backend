@@ -1,9 +1,11 @@
 import { MongoError } from "mongodb";
-import { accessCollection } from "../config/mongoClient"
+import { accessCollection } from "../config/mongoClient";
 import { User } from "../model/User";
 
 const getUsersCollection = async () => {
-  return await accessCollection<User>(process.env.USER_COLLECTION_NAME ?? "users");
+  return await accessCollection<User>(
+    process.env.USER_COLLECTION_NAME ?? "users"
+  );
 };
 
 export const saveUser = async (newUser: User): Promise<string> => {
@@ -17,7 +19,7 @@ export const saveUser = async (newUser: User): Promise<string> => {
     if (error instanceof MongoError && error.code === 11000) {
       throw new Error(`User with UID "${newUser.uid}" already exists`);
     } else {
-      throw error
+      throw error;
     }
   }
 };
@@ -26,7 +28,7 @@ export const findUserByUid = async (uid: string): Promise<User> => {
   const usersCollection = await getUsersCollection();
 
   let user: User | null;
-  
+
   try {
     user = await usersCollection.findOne({ uid });
   } catch (error) {
@@ -39,5 +41,4 @@ export const findUserByUid = async (uid: string): Promise<User> => {
   }
 
   return user;
-}
-
+};

@@ -1,8 +1,8 @@
 import express from "express";
 import { createUserHandler } from "../controller/usersController";
 
-const userRouter = express.Router()
+const userRouter = express.Router();
 
-userRouter.route('/create').post(createUserHandler)
+userRouter.route("/create").post(createUserHandler);
 
 export default userRouter;

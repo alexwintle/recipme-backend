@@ -2,15 +2,21 @@ import { Collection } from "mongodb";
 import { accessCollection } from "../../../config/mongoClient";
 import { User, UserStatus } from "../../../model/User";
 import { findUserByUid, saveUser } from "../../../repository/usersRepository";
-import * as collection from '../../../config/mongoClient';
-import { clearDatabase, setupIntegrationTest, stopTestDatabase } from "../../utils/testDatabase"
+import * as collection from "../../../config/mongoClient";
+import {
+  clearDatabase,
+  setupIntegrationTest,
+  stopTestDatabase,
+} from "../../utils/testDatabase";
 
-describe('usersRepository', () => {
+describe("usersRepository", () => {
   let usersCollection: Collection<User>;
 
   beforeAll(async () => {
     await setupIntegrationTest();
-    usersCollection = await accessCollection<User>(process.env.USER_COLLECTION_NAME ?? "users");
+    usersCollection = await accessCollection<User>(
+      process.env.USER_COLLECTION_NAME ?? "users"
+    );
   });
 
   beforeEach(async () => {
@@ -19,13 +25,13 @@ describe('usersRepository', () => {
 
   afterAll(async () => {
     await stopTestDatabase();
-  })
+  });
 
-  describe(('Should succeed:'), () => {
-    test('Should save a user to the users repository', async () => {
+  describe("Should succeed:", () => {
+    test("Should save a user to the users repository", async () => {
       const newUser: User = {
-        username: 'johnsmith',
-        uid: 'abc123',
+        username: "johnsmith",
+        uid: "abc123",
         status: UserStatus.ACTIVE,
         createdAt: new Date().toISOString(),
       };
@@ -33,7 +39,7 @@ describe('usersRepository', () => {
       const insertedId = await saveUser(newUser);
       expect(insertedId).toBeDefined();
 
-      const foundUser = await usersCollection.findOne({ uid: newUser.uid })
+      const foundUser = await usersCollection.findOne({ uid: newUser.uid });
 
       expect(foundUser).not.toBeNull();
       expect(foundUser?.uid).toBe(newUser.uid);
@@ -42,10 +48,10 @@ describe('usersRepository', () => {
       expect(foundUser?.createdAt).toBeDefined();
     });
 
-    test('Should find a saved user in the users repository', async () => {
+    test("Should find a saved user in the users repository", async () => {
       const savedUser: User = {
-        username: 'johnsmith',
-        uid: 'abc123',
+        username: "johnsmith",
+        uid: "abc123",
         status: UserStatus.ACTIVE,
         createdAt: new Date().toISOString(),
       };
@@ -59,14 +65,13 @@ describe('usersRepository', () => {
       expect(foundUser?.uid).toBe(savedUser.uid);
       expect(foundUser?.status).toBe(savedUser.status);
     });
+  });
 
-  })
-
-  describe('Should fail:', () => {
-    test('Should throw an error when trying to save a user with a duplicate UID', async () => {
+  describe("Should fail:", () => {
+    test("Should throw an error when trying to save a user with a duplicate UID", async () => {
       const newUser: User = {
-        username: 'johnsmith',
-        uid: 'abc123',
+        username: "johnsmith",
+        uid: "abc123",
         status: UserStatus.ACTIVE,
         createdAt: new Date().toISOString(),
       };
@@ -74,30 +79,37 @@ describe('usersRepository', () => {
       //First insert - no duplicates yet
       await saveUser(newUser);
 
-      await expect(saveUser(newUser)).rejects.toThrow('User with UID "abc123" already exists');
+      await expect(saveUser(newUser)).rejects.toThrow(
+        'User with UID "abc123" already exists'
+      );
     });
 
-    test('Should throw an error when trying to find a user who is not in the database', async () => {
+    test("Should throw an error when trying to find a user who is not in the database", async () => {
       const newUser: User = {
-        username: 'johnsmith',
-        uid: 'abc123',
+        username: "johnsmith",
+        uid: "abc123",
         status: UserStatus.ACTIVE,
         createdAt: new Date().toISOString(),
       };
 
-      await expect(findUserByUid(newUser.uid)).rejects.toThrow("User not found in the database");
+      await expect(findUserByUid(newUser.uid)).rejects.toThrow(
+        "User not found in the database"
+      );
     });
 
-    test('Should throw a database error when MongoDB fails', async () => {
-      jest.spyOn(collection, 'accessCollection').mockImplementationOnce(() => {
+    test("Should throw a database error when MongoDB fails", async () => {
+      jest.spyOn(collection, "accessCollection").mockImplementationOnce(() => {
         return Promise.resolve({
-          findOne: () => { throw new Error('Mongo connection error'); }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          findOne: () => {
+            throw new Error("Mongo connection error");
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
       });
 
-      await expect(findUserByUid('any-uid')).rejects.toThrow("Database error occurred while finding user");
+      await expect(findUserByUid("any-uid")).rejects.toThrow(
+        "Database error occurred while finding user"
+      );
     });
   });
-
 });

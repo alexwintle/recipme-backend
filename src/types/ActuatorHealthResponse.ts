@@ -1,7 +1,7 @@
 export interface ActuatorHealthResponse {
-  statusCode: number,
+  statusCode: number;
   components: {
-    app: { status: string }
-    mongo: { status: string, error?: string }
-  }
+    app: { status: string };
+    mongo: { status: string; error?: string };
+  };
 }

@@ -8,6 +8,6 @@ export interface User {
 }
 
 export enum UserStatus {
-  ACTIVE = 'ACTIVE',
-  DELETED = 'DELETED'
+  ACTIVE = "ACTIVE",
+  DELETED = "DELETED",
 }

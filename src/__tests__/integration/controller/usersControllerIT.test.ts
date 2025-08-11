@@ -1,18 +1,24 @@
-import request from 'supertest';
-import { clearDatabase, setupIntegrationTest, stopTestDatabase } from '../../utils/testDatabase';
-import { NewUserRequest } from '../../../types/NewUserRequest';
-import { User, UserStatus } from '../../../model/User';
-import { accessCollection } from '../../../config/mongoClient';
-import { Collection } from 'mongodb';
-import { App } from 'supertest/types';
+import request from "supertest";
+import {
+  clearDatabase,
+  setupIntegrationTest,
+  stopTestDatabase,
+} from "../../utils/testDatabase";
+import { NewUserRequest } from "../../../types/NewUserRequest";
+import { User, UserStatus } from "../../../model/User";
+import { accessCollection } from "../../../config/mongoClient";
+import { Collection } from "mongodb";
+import { App } from "supertest/types";
 
-describe('POST /users', () => {
+describe("POST /users", () => {
   let usersCollection: Collection<User>;
   let app: App;
 
   beforeAll(async () => {
     app = await setupIntegrationTest();
-    usersCollection = await accessCollection<User>(process.env.USER_COLLECTION_NAME ?? "users");
+    usersCollection = await accessCollection<User>(
+      process.env.USER_COLLECTION_NAME ?? "users"
+    );
   });
 
   afterEach(async () => {
@@ -23,23 +29,23 @@ describe('POST /users', () => {
     await stopTestDatabase();
   });
 
-  test('Should create and return a new user', async () => {
+  test("Should create and return a new user", async () => {
     const newUser: NewUserRequest = {
-      username: 'johnsmith',
-      uid: 'abc123',
+      username: "johnsmith",
+      uid: "abc123",
     };
 
     const res = await request(app)
-      .post('/users/create')
+      .post("/users/create")
       .send(newUser)
       .expect(200);
 
     const expectedUser: User = {
-      username: 'johnsmith',
-      uid: 'abc123',
+      username: "johnsmith",
+      uid: "abc123",
       status: UserStatus.ACTIVE,
-      createdAt: new Date().toISOString()
-    }
+      createdAt: new Date().toISOString(),
+    };
 
     expect(newUser.uid).toBe(expectedUser.uid);
     expect(res.body).toMatchObject({
@@ -47,13 +53,13 @@ describe('POST /users', () => {
     });
   }, 30000);
 
-  test('Should return error when no URI provided', async () => {
+  test("Should return error when no URI provided", async () => {
     const newUser = {
-      username: 'alex',
+      username: "alex",
     };
 
     const res = await request(app)
-      .post('/users/create')
+      .post("/users/create")
       .send(newUser)
       .expect(400);
 
@@ -61,14 +67,14 @@ describe('POST /users', () => {
       error: "uid was not provided.",
     });
   }, 30000);
-  
-  test('Should return error when no Username not provided', async () => {
+
+  test("Should return error when no Username not provided", async () => {
     const newUser = {
-      uid: 'abc123',
+      uid: "abc123",
     };
 
     const res = await request(app)
-      .post('/users/create')
+      .post("/users/create")
       .send(newUser)
       .expect(400);
 
@@ -76,5 +82,4 @@ describe('POST /users', () => {
       error: "username was not provided.",
     });
   }, 30000);
-
 });

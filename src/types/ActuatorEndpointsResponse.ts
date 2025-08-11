@@ -1,5 +1,5 @@
 export interface ActuatorEndpointsResponse {
-  health: string
-  info: string
-  metrics: string
+  health: string;
+  info: string;
+  metrics: string;
 }

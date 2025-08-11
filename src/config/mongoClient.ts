@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, Document } from 'mongodb';
+import { MongoClient, Db, Collection, Document } from "mongodb";
 
 let client: MongoClient | null = null;
 let db: Db | null = null;
@@ -8,7 +8,7 @@ const getConfig = () => {
   const dbName = process.env.MONGO_DB_NAME;
 
   if (!uri) {
-    throw new Error('MONGO_URI environment variable is not set');
+    throw new Error("MONGO_URI environment variable is not set");
   }
 
   return { uri, dbName };
@@ -22,7 +22,7 @@ const createClient = async (): Promise<MongoClient> => {
       client = await new MongoClient(uri).connect();
       db = client.db(dbName);
     } catch (err) {
-      console.error('Failed to connect to MongoDB:', err);
+      console.error("Failed to connect to MongoDB:", err);
       client = null;
       db = null;
       throw err;
@@ -40,9 +40,13 @@ const getDb = async (): Promise<Db> => {
   return db!;
 };
 
-const accessCollection = async <T extends Document>(collectionName: string): Promise<Collection<T>> => {
+const accessCollection = async <T extends Document>(
+  collectionName: string
+): Promise<Collection<T>> => {
   if (!collectionName) {
-    throw new Error('Please provide the name of a collection you would like to access.');
+    throw new Error(
+      "Please provide the name of a collection you would like to access."
+    );
   }
 
   const dbInstance = await getDb();
@@ -64,14 +68,9 @@ const closeDatabase = async () => {
 
 const initializeDb = async () => {
   const dbInstance = await getDb();
-  const usersCollection = dbInstance.collection('users');
+  const usersCollection = dbInstance.collection("users");
 
   await usersCollection.createIndex({ uid: 1 }, { unique: true });
 };
 
-export {
-  initializeDb,
-  closeDatabase,
-  mongoHealthcheck,
-  accessCollection
-}
+export { initializeDb, closeDatabase, mongoHealthcheck, accessCollection };
