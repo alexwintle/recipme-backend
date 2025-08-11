@@ -6,7 +6,7 @@ import { accessCollection } from '../../../config/mongoClient';
 import { Collection } from 'mongodb';
 import { App } from 'supertest/types';
 
-describe('POST /users (integration)', () => {
+describe('POST /users', () => {
   let usersCollection: Collection<User>;
   let app: App;
 
@@ -30,7 +30,7 @@ describe('POST /users (integration)', () => {
     };
 
     const res = await request(app)
-      .post('/users/create/user')
+      .post('/users/create')
       .send(newUser)
       .expect(200);
 
@@ -43,8 +43,37 @@ describe('POST /users (integration)', () => {
 
     expect(newUser.uid).toBe(expectedUser.uid);
     expect(res.body).toMatchObject({
-      createdUser: newUser.uid,
       message: "Created user with UID: abc123",
+    });
+  }, 30000);
+
+  test('Should return error when no URI provided', async () => {
+    const newUser = {
+      username: 'alex',
+    };
+
+    const res = await request(app)
+      .post('/users/create')
+      .send(newUser)
+      .expect(400);
+
+    expect(res.body).toMatchObject({
+      error: "uid was not provided.",
+    });
+  }, 30000);
+  
+  test('Should return error when no Username not provided', async () => {
+    const newUser = {
+      uid: 'abc123',
+    };
+
+    const res = await request(app)
+      .post('/users/create')
+      .send(newUser)
+      .expect(400);
+
+    expect(res.body).toMatchObject({
+      error: "username was not provided.",
     });
   }, 30000);
 
